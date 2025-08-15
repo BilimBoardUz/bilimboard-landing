@@ -1,0 +1,214 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BilimBoard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/svg+xml">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+</head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8945913247385829" crossorigin="anonymous"></script>
+<body>
+    <div class="bg-shapes">
+        <svg class="bg-shape s1" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="40" stroke="#0077FF" stroke-width="5" stroke-dasharray="10 5" />
+            <path d="M50 10 L60 30 L40 30 L50 10 Z" fill="#0077FF" />
+        </svg>
+        <svg class="bg-shape s2" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="10" width="80" height="80" rx="15" fill="#E9F4FF" stroke="#0077FF" stroke-width="3"/>
+            <circle cx="50" cy="50" r="20" fill="#0077FF"/>
+        </svg>
+        <svg class="bg-shape s3" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 5 L95 50 L50 95 L5 50 L50 5 Z" fill="#FFD700" stroke="#FFC107" stroke-width="2"/>
+            <circle cx="50" cy="50" r="10" fill="#FFFFFF"/>
+        </svg>
+        <svg class="bg-shape s4" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 20 Q50 0 80 20 T80 80 Q50 100 20 80 T20 20 Z" fill="#A020F0" opacity="0.8"/>
+        </svg>
+        <svg class="bg-shape s5" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 0 L100 50 L50 100 L0 50 Z" fill="#00CC99" stroke="#00AA77" stroke-width="2"/>
+        </svg>
+    </div>
+
+    <header class="landing-header">
+        <nav class="container header-nav">
+            <a href="{% url 'core:index' %}" class="logo-container">
+                <img src="{% static 'images/logo.png' %}" alt="{% translate 'BilimBoard Logo' %}" class="logo-img">
+                <span class="logo-text">BilimBoard</span>
+                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.05 3.00002v5C7.33127 8.93351 5.05005 11.2392 5.05005 14.2c0 3.7555 3.13401 6.8 6.99995 6.8 3.866 0 7-3.0445 7-6.8 0-2.9608-2.2812-5.26649-5-6.19998v-5m-4 0h4m-4 0H8.05005m5.99995 0h2M5.09798 15H19.0021"/ style="color: blue">
+                </svg>
+            </a>
+            
+            <div class="language-switcher">
+                <form action="{% url 'set_language' %}" method="post">
+                    {% csrf_token %}
+                    <input name="next" type="hidden" value="{{ request.path }}">
+                    <select name="language" onchange="this.form.submit()">
+                        {% get_current_language as LANGUAGE_CODE %}
+                        {% get_available_languages as LANGUAGES %}
+                        {% for lang_code, lang_name in LANGUAGES %}
+                            <option value="{{ lang_code }}" {% if lang_code == LANGUAGE_CODE %}selected{% endif %}>
+                                {{ lang_code|upper }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+            
+            <div class="desktop-btns">
+                <a href="{% url 'accounts:login' %}" class="btn btn-secondary">{% translate "Sign In" %}</a>
+                <a href="{% url 'accounts:register' %}" class="btn btn-primary">{% translate "Get Started" %}</a>
+            </div>
+            
+            <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="{% translate 'Toggle menu' %}">
+                <svg class="menu-open-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+                <svg class="menu-close-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </nav>
+    </header>
+
+    <div id="mobile-menu" class="mobile-menu">
+        <a href="{% url 'accounts:login' %}" class="btn btn-secondary">{% translate "Sign In" %}</a>
+        <a href="{% url 'accounts:register' %}" class="btn btn-primary">{% translate "Get Started" %}</a>
+    </div>
+
+    <main class="main-content">
+        <section class="hero-section container">
+            <div class="hero-content">
+                <span class="hero-subtitle">{% translate "Your future starts here — and it's free." %}</span>
+                <h1>{% translate "Get into your dream university with confidence." %}</h1>
+                <p>{% translate "BilimBoard gives you free, AI-powered prep so you can focus on achieving the future you deserve." %}</p>
+                <div class="hero-buttons">
+                    <a href="{% url 'accounts:login' %}" class="btn btn-primary">{% translate "Start my Journey" %}</a>
+                    <a href="#features-section" class="btn btn-secondary">{% translate "Learn More" %}</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <img src="{% static 'images/success.png' %}" alt="{% translate 'Success Illustration' %}">
+            </div>
+        </section>
+
+        <section class="features-section" id="features-section">
+            <div class="container">
+                <h2 class="section-title">{% translate "Our Key Features" %}</h2>
+
+                <div class="feature-block-item" id="feature1">
+                    <div class="feature-content">
+                        <h3>{% translate "AI-Mentor 'IlmBro'" %}</h3>
+                        <p>{% translate "Your personal mentor who guides you on the right learning path, providing personalized recommendations and feedback." %}</p>
+                        <a href="{% url 'accounts:login' %}" class="btn btn-secondary">{% translate "Start with AI" %}</a>
+                    </div>
+                    <div class="feature-visual">
+                        <img src="{% static 'images/ilmbro.png' %}" alt="{% translate 'AI Mentor' %}" class="feature-img">
+                    </div>
+                </div>
+
+                <div class="feature-block-item" id="feature2">
+                    <div class="feature-content">
+                        <h3>{% translate "Progress Tracker" %}</h3>
+                        <p>{% translate "Visualize your learning journey, track achievements, and get detailed analysis for continuous growth." %}</p>
+                        <a href="{% url 'accounts:login' %}" class="btn btn-secondary">{% translate "Track Progress" %}</a>
+                    </div>
+                    <div class="feature-visual">
+                        <img src="https://placehold.co/300x200/e9f4ff/0077FF?text=Progress+Tracker" alt="{% translate 'Progress Tracker' %}" class="feature-img">
+                    </div>
+                </div>
+
+                <div class="feature-block-item" id="feature3">
+                    <div class="feature-content">
+                        <h3>{% translate "Gamification" %}</h3>
+                        <p>{% translate "Turn routine learning into an exciting adventure with quests, challenges, and competitions with friends." %}</p>
+                        <a href="{% url 'accounts:login' %}" class="btn btn-secondary">{% translate "Play and Learn" %}</a>
+                    </div>
+                    <div class="feature-visual">
+                        <img src="https://placehold.co/300x200/e9f4ff/0077FF?text=Gamification" alt="{% translate 'Gamification' %}" class="feature-img">
+                    </div>
+                </div>
+
+                <div class="feature-block-item" id="feature4">
+                    <div class="feature-content">
+                        <h3>{% translate "Reward System" %}</h3>
+                        <p>{% translate "Earn points, unlock exclusive achievements, and exchange them for prizes and bonuses." %}</p>
+                        <a href="{% url 'accounts:login' %}" class="btn btn-secondary">{% translate "Get Rewards" %}</a>
+                    </div>
+                    <div class="feature-visual">
+                        <img src="{% static 'images/progress.gif' %}" alt="{% translate 'Reward System' %}" class="feature-img">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="reviews-section" id="reviews-section">
+            <div class="container">
+                <h2 class="section-title">{% translate "What Our Users Say" %}</h2>
+                <div class="phone-mockup-wrapper">
+                    <div class="phone-mockup">
+                        <div class="phone-screen">
+                            <img src="{% static 'images/review1.jpg'%}" alt="{% translate 'User Review 1' %}" class="review-screenshot">
+                            <img src="{% static 'images/review2.jpg'%}" alt="{% translate 'User Review 2' %}" class="review-screenshot">
+                            <img src="{% static 'images/review3.jpg'%}" alt="{% translate 'User Review 3' %}" class="review-screenshot">
+                        </div>
+                    </div>
+                    <div class="screenshot-navigation">
+                        <button id="prev-screenshot-btn" class="nav-button" aria-label="{% translate 'Previous review' %}">‹</button>
+                        <button id="next-screenshot-btn" class="nav-button" aria-label="{% translate 'Next review' %}">›</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="landing-footer">
+        <div class="container footer-content">
+            <div class="footer-main">
+                <a href="core:index" class="footer-logo">
+                    <img src="{% static 'images/logo.png' %}" alt="{% translate 'BilimBoard Logo' %}">
+                    <span>BilimBoard</span>
+                </a>
+            </div>
+            
+            <div class="footer-links">
+                <a href="#features-section">{% translate "Features" %}</a>
+                <a href="#reviews-section">{% translate "Reviews" %}</a>
+                <a href="">{% translate "Careers" %}</a>
+                <a href="mailto:support@bilimboard.com">{% translate "Support" %}</a>
+                <a href="">{% translate "Blog" %}</a>
+                <a href="">{% translate "Help Center" %}</a>
+            </div>
+        </div>
+        
+        <div class="container footer-legal">
+            <div class="footer-legal-links">
+                <a href="/privacy-policy">{% translate "Privacy Policy" %}</a>
+                <a href="/terms-of-service">{% translate "Terms of Service" %}</a>
+                <a href="/cookie-policy">{% translate "Cookie Policy" %}</a>
+                <a href="/accessibility">{% translate "Accessibility" %}</a>
+                <a href="/data-protection">{% translate "Data Protection" %}</a>
+            </div>
+            <div class="footer-copyright">
+                <p>&copy; {% now "Y" %} {% translate "BilimBoard Education Technology. All rights reserved. Registered in Uzbekistan. For Legal Details Contact support@bilimboard.com." %}<br>{% translate "We will reply within 1-7 business days." %}</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="cookie-consent" class="cookie-consent">
+        <div class="container cookie-content">
+            <p>{% translate "We use essential cookies to improve your experience and analyze site usage. By continuing, you agree to our" %} <a href="/cookie-policy" style="color: var(--primary); text-decoration: underline;">{% translate "Cookie Policy" %}</a> {% translate "and" %} <a href="/privacy-policy" style="color: var(--primary); text-decoration: underline;">{% translate "Privacy Policy" %}</a>.</p>
+            <div class="cookie-buttons">
+                <button id="accept-cookies" class="btn btn-primary">{% translate "Okay" %}</button>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'js/index.js' %}"></script>
+</body>
+</html>
